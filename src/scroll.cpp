@@ -23,10 +23,11 @@ void scroll_update()
 
     // Write the dotboard repeatedly
     write_dotboard(&dots, false);
-    x --;
+    x--;
 
     // Start scrolling again if we reach the end
-    if (x == -(strlen(text) * 5)) {
+    if (x == -(strlen(text) * 5))
+    {
         x = DOT_COLUMNS;
     }
 }

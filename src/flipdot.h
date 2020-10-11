@@ -21,8 +21,7 @@
 #define PIN_ROW_ADVANCE GPIO_NUM_18
 #define PIN_COIL_DRIVE GPIO_NUM_21
 
-#define GPIO_OUTPUT_PIN_SEL ((1ULL<<PIN_ENABLE_1) | (1ULL<<PIN_ENABLE_2) | (1ULL<<PIN_ENABLE_3) | (1ULL<<PIN_ENABLE_4) | (1ULL<<PIN_COLUMN_ADVANCE) | (1ULL<<PIN_RESET) | (1ULL<<PIN_SET_UNSET) | (1ULL<<PIN_ROW_ADVANCE) | (1ULL<<PIN_COIL_DRIVE))
-
+#define GPIO_OUTPUT_PIN_SEL ((1ULL << PIN_ENABLE_1) | (1ULL << PIN_ENABLE_2) | (1ULL << PIN_ENABLE_3) | (1ULL << PIN_ENABLE_4) | (1ULL << PIN_COLUMN_ADVANCE) | (1ULL << PIN_RESET) | (1ULL << PIN_SET_UNSET) | (1ULL << PIN_ROW_ADVANCE) | (1ULL << PIN_COIL_DRIVE))
 
 // Cycle count in 1 µS
 #define CYCLES_PER_US 600
@@ -35,6 +34,6 @@ typedef uint8_t dotboard_t[DOT_COLUMNS][DOT_ROWS];
 
 // Public subs
 void flipdot_init();
-void write_dotboard(dotboard_t* dots, bool is_keyframe);
+void write_dotboard(dotboard_t *dots, bool is_keyframe);
 
 #endif

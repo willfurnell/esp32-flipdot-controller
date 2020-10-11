@@ -11,7 +11,7 @@
 #include "fill.h"
 #include "text.h"
 
-static const char* TAG = "Snake";
+static const char *TAG = "Snake";
 
 // The dotboard for the snake mode
 static dotboard_t dots;
@@ -25,76 +25,87 @@ static coordinate_t treat;
 /**
  * Listen for keystrokes on the UART and update the snake direction.
  */
-static void update_direction_user(snake_t* snake)
+static void update_direction_user(snake_t *snake)
 {
     uint8_t read_char;
     STATUS s = uart_rx_one_char(&read_char);
-    if (s == OK) {
+    if (s == OK)
+    {
         // Change the direction as appropriate
-        switch (read_char) {
-            case 'w':
-                if (snake->direction != DIRECTION_DOWN) {
-                    snake->direction = DIRECTION_UP;
-                    ESP_LOGI(TAG, "Changed direction to UP");
-                }
-                break;
-            case 'a':
-                if (snake->direction != DIRECTION_RIGHT) {
-                    snake->direction = DIRECTION_LEFT;
-                    ESP_LOGI(TAG, "Changed direction to LEFT");
-                }
-                break;
-            case 's':
-                if (snake->direction != DIRECTION_UP) {
-                    snake->direction = DIRECTION_DOWN;
-                    ESP_LOGI(TAG, "Changed direction to DOWN");
-                }
-                break;
-            case 'd':
-                if (snake->direction != DIRECTION_LEFT) {
-                    snake->direction = DIRECTION_RIGHT;
-                    ESP_LOGI(TAG, "Changed direction to RIGHT");
-                }
-                break;
+        switch (read_char)
+        {
+        case 'w':
+            if (snake->direction != DIRECTION_DOWN)
+            {
+                snake->direction = DIRECTION_UP;
+                ESP_LOGI(TAG, "Changed direction to UP");
+            }
+            break;
+        case 'a':
+            if (snake->direction != DIRECTION_RIGHT)
+            {
+                snake->direction = DIRECTION_LEFT;
+                ESP_LOGI(TAG, "Changed direction to LEFT");
+            }
+            break;
+        case 's':
+            if (snake->direction != DIRECTION_UP)
+            {
+                snake->direction = DIRECTION_DOWN;
+                ESP_LOGI(TAG, "Changed direction to DOWN");
+            }
+            break;
+        case 'd':
+            if (snake->direction != DIRECTION_LEFT)
+            {
+                snake->direction = DIRECTION_RIGHT;
+                ESP_LOGI(TAG, "Changed direction to RIGHT");
+            }
+            break;
         }
     }
 }
 
-
 /**
  * Use a fill algorithm to decide the next best direction change.
  */
-static void update_direction_ai(snake_t* snake)
+static void update_direction_ai(snake_t *snake)
 {
     uint8_t read_char;
     STATUS s = uart_rx_one_char(&read_char);
-    if (s == OK) {
+    if (s == OK)
+    {
         // Change the direction as appropriate
-        switch (read_char) {
-            case 'w':
-                if (snake->direction != DIRECTION_DOWN) {
-                    snake->direction = DIRECTION_UP;
-                    ESP_LOGI(TAG, "Changed direction to UP");
-                }
-                break;
-            case 'a':
-                if (snake->direction != DIRECTION_RIGHT) {
-                    snake->direction = DIRECTION_LEFT;
-                    ESP_LOGI(TAG, "Changed direction to LEFT");
-                }
-                break;
-            case 's':
-                if (snake->direction != DIRECTION_UP) {
-                    snake->direction = DIRECTION_DOWN;
-                    ESP_LOGI(TAG, "Changed direction to DOWN");
-                }
-                break;
-            case 'd':
-                if (snake->direction != DIRECTION_LEFT) {
-                    snake->direction = DIRECTION_RIGHT;
-                    ESP_LOGI(TAG, "Changed direction to RIGHT");
-                }
-                break;
+        switch (read_char)
+        {
+        case 'w':
+            if (snake->direction != DIRECTION_DOWN)
+            {
+                snake->direction = DIRECTION_UP;
+                ESP_LOGI(TAG, "Changed direction to UP");
+            }
+            break;
+        case 'a':
+            if (snake->direction != DIRECTION_RIGHT)
+            {
+                snake->direction = DIRECTION_LEFT;
+                ESP_LOGI(TAG, "Changed direction to LEFT");
+            }
+            break;
+        case 's':
+            if (snake->direction != DIRECTION_UP)
+            {
+                snake->direction = DIRECTION_DOWN;
+                ESP_LOGI(TAG, "Changed direction to DOWN");
+            }
+            break;
+        case 'd':
+            if (snake->direction != DIRECTION_LEFT)
+            {
+                snake->direction = DIRECTION_RIGHT;
+                ESP_LOGI(TAG, "Changed direction to RIGHT");
+            }
+            break;
         }
     }
 }
@@ -102,8 +113,8 @@ static void update_direction_ai(snake_t* snake)
 /**
  * Advance the snake position by one tick.
  */
-static void update_position(snake_t* snake)
-{   
+static void update_position(snake_t *snake)
+{
     // Capture the previous head position
     coordinate_t old_head;
     old_head.x = snake->head.x;
@@ -116,7 +127,8 @@ static void update_position(snake_t* snake)
     snake->head.x += (snake->direction >> 3) & 1;
 
     // Shift the tail along
-    for (int tail_i = snake->tail_length; tail_i > 0; tail_i --) {
+    for (int tail_i = snake->tail_length; tail_i > 0; tail_i--)
+    {
         snake->tail[tail_i] = snake->tail[tail_i - 1];
     }
 
@@ -137,56 +149,62 @@ static void place_treat()
 /**
  * Detect collisions with walls, snake tail segments and treats.
  */
-static void detect_collisions(snake_t* snake)
+static void detect_collisions(snake_t *snake)
 {
     // We extend by one if we eat a treat
-    if (snake->head.x == treat.x && snake->head.y == treat.y) {
-        snake->tail_length ++;
+    if (snake->head.x == treat.x && snake->head.y == treat.y)
+    {
+        snake->tail_length++;
         place_treat();
         ESP_LOGI(TAG, "Ate a treat, tail length extended to %d", snake->tail_length);
     }
 
-    #ifdef TOROIDAL
+#ifdef TOROIDAL
 
-        // Implement a toroidal map
-        if (snake->head.x == 0 && snake->direction == DIRECTION_LEFT) {
-            snake->head.x = DOT_COLUMNS - 1;
-        }
-        if (snake->head.x == DOT_COLUMNS && snake->direction == DIRECTION_RIGHT) {
-            snake->head.x = 0;
-        }
-        if (snake->head.y == 0 && snake->direction == DIRECTION_UP) {
-            snake->head.y = DOT_ROWS - 1;
-        }
-        if (snake->head.y == DOT_ROWS && snake->direction == DIRECTION_DOWN) {
-            snake->head.y = 0;
-        }
+    // Implement a toroidal map
+    if (snake->head.x == 0 && snake->direction == DIRECTION_LEFT)
+    {
+        snake->head.x = DOT_COLUMNS - 1;
+    }
+    if (snake->head.x == DOT_COLUMNS && snake->direction == DIRECTION_RIGHT)
+    {
+        snake->head.x = 0;
+    }
+    if (snake->head.y == 0 && snake->direction == DIRECTION_UP)
+    {
+        snake->head.y = DOT_ROWS - 1;
+    }
+    if (snake->head.y == DOT_ROWS && snake->direction == DIRECTION_DOWN)
+    {
+        snake->head.y = 0;
+    }
 
-    #else
+#else
 
-        // We're dead if we touch the walls
-        if (
-            (snake->head.x == 0 && snake->direction == DIRECTION_LEFT) ||
-            (snake->head.x == DOT_COLUMNS - 1 && snake->direction == DIRECTION_RIGHT) ||
-            (snake->head.y == 0 && snake->direction == DIRECTION_UP) ||
-            (snake->head.y == DOT_ROWS - 1 && snake->direction == DIRECTION_DOWN)
-        ) {
-            ESP_LOGI(TAG, "Wall collision detected - snake killed");
-            snake->is_dead = true;
-            return;
-        }
+    // We're dead if we touch the walls
+    if (
+        (snake->head.x == 0 && snake->direction == DIRECTION_LEFT) ||
+        (snake->head.x == DOT_COLUMNS - 1 && snake->direction == DIRECTION_RIGHT) ||
+        (snake->head.y == 0 && snake->direction == DIRECTION_UP) ||
+        (snake->head.y == DOT_ROWS - 1 && snake->direction == DIRECTION_DOWN))
+    {
+        ESP_LOGI(TAG, "Wall collision detected - snake killed");
+        snake->is_dead = true;
+        return;
+    }
 
-    #endif
+#endif
 
     // We're dead if we touch our tail
-    for (int tail_i = 0; tail_i < snake->tail_length; tail_i ++) {
-        if (snake->head.x == snake->tail[tail_i].x && snake->head.y == snake->tail[tail_i].y) {
+    for (int tail_i = 0; tail_i < snake->tail_length; tail_i++)
+    {
+        if (snake->head.x == snake->tail[tail_i].x && snake->head.y == snake->tail[tail_i].y)
+        {
             ESP_LOGI(TAG, "Tail collision detected - snake killed");
             snake->is_dead = true;
             return;
         }
     }
-
 }
 
 /**
@@ -215,7 +233,8 @@ void death_screen()
 
     uint8_t read_char;
     STATUS s = uart_rx_one_char(&read_char);
-    if (s == OK) {
+    if (s == OK)
+    {
         ESP_LOGI(TAG, "Starting new game!");
         snake_init();
     }
@@ -224,13 +243,15 @@ void death_screen()
 void snake_update()
 {
     // Detect any collisions that occurred in the last frame
-    if (!snake.is_dead) {
+    if (!snake.is_dead)
+    {
         // Alter direction
         update_direction_user(&snake);
         detect_collisions(&snake);
     }
 
-    if (snake.is_dead) {
+    if (snake.is_dead)
+    {
         death_screen();
         return;
     }
@@ -245,7 +266,8 @@ void snake_update()
     dots[snake.head.x][snake.head.y] = 1;
 
     // Draw the snake tail to the dotboard
-    for (int tail_i = 0; tail_i < snake.tail_length; tail_i ++) {
+    for (int tail_i = 0; tail_i < snake.tail_length; tail_i++)
+    {
         dots[snake.tail[tail_i].x][snake.tail[tail_i].y] = 1;
     }
 

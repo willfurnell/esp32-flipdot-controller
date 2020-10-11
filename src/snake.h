@@ -6,7 +6,8 @@
 #define TOROIDAL 1
 
 // A coordinate on the grid
-typedef struct {
+typedef struct
+{
     int x;
     int y;
 } coordinate_t;
@@ -15,7 +16,8 @@ typedef struct {
 typedef coordinate_t tail_t[MAX_TAIL_LENGTH];
 
 // The direction of the snake
-typedef enum {
+typedef enum
+{
     DIRECTION_UP = 1,
     DIRECTION_DOWN = 2,
     DIRECTION_LEFT = 4,
@@ -23,7 +25,8 @@ typedef enum {
 } direction_t;
 
 // The snake
-typedef struct {
+typedef struct
+{
     coordinate_t head;
     tail_t tail;
     int tail_length;
