@@ -1,20 +1,11 @@
 # `esp32-flipdot-controller`
 
-**Directly controls a Hanover Displays Ltd. 7020-20-01 dotboard from an R014B-model 20x14 flipdot display.**
+## Replacement controller for Hannover Flipdot Displays
 
-![Image of the FDC board](https://damow.net/assets/images/2018/06/assembled-board.jpg)
+This is a fork of the original https://github.com/themainframe/esp32-flipdot-controller, but is designed to allow for more than one panel (my display has three), and works with the Platform.IO build, and Arduino ecosystems.
 
-See the associated [blog post on damow.net](https://damow.net/fun-with-flip-dot-displays/)!
+It currently gets the time from an NTP server and displays it. The code obviosuly needs more work, but it's good enough for now. 
 
-## Pinout
+Also included in this repository are KiCad schematics for my version of the PCB, which has hardware (but not yet software) support for the built in LED strip and other personal customisations.
 
-**GPIO** numbers refer to the ESP32 GPIO pins.
-**Pin** numbers refer to the dotboard's 14-pin flex connector.
-
-* **GPIO 21** - Enable Display (**Pin 2**)
-* **GPIO 18** - Column Advance (**Pin 7**)
-* **GPIO 19** - Reset (**Pin 8**)
-* **GPIO 17** - Set/Unset (**Pin 9**)
-* **GPIO 5** - Row Advance (**Pin 10**)
-
-In addition, **GPIO 4** controls the coil drive on **Pin 12** via a _FET/BJT_.
+Based on the [blog post on damow.net](https://damow.net/fun-with-flip-dot-displays/)!
