@@ -8,7 +8,7 @@
 #include "text.h"
 #include "fill.h"
 
-static const char text[] = "Flipdot Controller Mk.2 - DAMOW.NET";
+static const char text[] = "Hello, World!";
 
 static dotboard_t dots;
 static int x = DOT_COLUMNS;
@@ -19,7 +19,7 @@ void scroll_update()
     fill_off(&dots);
 
     // Draw some text
-    render_text_4x5(&dots, x, 4, text);
+    render_text_4x5(&dots, x, 0, text);
 
     // Write the dotboard repeatedly
     write_dotboard(&dots, false);
