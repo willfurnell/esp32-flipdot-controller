@@ -12,7 +12,6 @@
 #include <WiFiUdp.h>
 #include "NTP.h"
 #include <ESPmDNS.h>
-#include <ArduinoOTA.h>
 
 static const char *TAG = "Main";
 
@@ -42,7 +41,7 @@ void setup()
     }
 
     if (!MDNS.begin(host))
-    { //http://esp32.local
+    {
         ESP_LOGE("Error setting up MDNS responder!");
         while (1)
         {

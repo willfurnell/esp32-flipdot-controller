@@ -4,10 +4,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-// Dimensions
+// Dimensions of your display
 #define DOT_ROWS 8
-#define DOT_COLUMNS 84 //28
-
+#define DOT_COLUMNS 84
+#define NUM_PANELS 3
 #define COLUMNS_PER_PANEL 28
 
 // GPIO Pin Definitions

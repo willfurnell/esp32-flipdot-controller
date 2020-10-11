@@ -11,7 +11,7 @@
 #include "driver/gpio.h"
 #include "flipdot.h"
 
-static const char* TAG = "FD";
+static const char *TAG = "FD";
 
 static bool dotboard_synced = false;
 static dotboard_t last_written_dotboard;
@@ -39,7 +39,7 @@ void flipdot_init()
     gpio_config(&io_conf);
 
     // All outputs
-    
+
     gpio_set_direction(PIN_ENABLE_1, GPIO_MODE_OUTPUT);
     gpio_set_direction(PIN_ENABLE_2, GPIO_MODE_OUTPUT);
     gpio_set_direction(PIN_ENABLE_3, GPIO_MODE_OUTPUT);
@@ -62,19 +62,21 @@ void flipdot_init()
     gpio_set_level(PIN_COIL_DRIVE, 0);
 
     // Create space for a backing store for the last-written dotboard
-    for (uint c = 0; c < DOT_COLUMNS; c ++) {
-        for (uint r = 0; r < DOT_ROWS; r ++) {
+    for (uint c = 0; c < DOT_COLUMNS; c++)
+    {
+        for (uint r = 0; r < DOT_ROWS; r++)
+        {
             last_written_dotboard[c][r] = 0;
         }
     }
-
 }
 
 // Insert a wait
 static void wait(uint wait_us)
 {
     uint32_t c_current = 0, c_start = XTHAL_GET_CCOUNT();
-    do {
+    do
+    {
         c_current = XTHAL_GET_CCOUNT();
     } while (c_current - c_start < CYCLES_PER_US * wait_us);
 }
@@ -123,17 +125,17 @@ static void enable_1()
     gpio_set_level(PIN_ENABLE_1, 1);
 }
 
-static void enable_2() 
+static void enable_2()
 {
     gpio_set_level(PIN_ENABLE_2, 1);
 }
 
-static void enable_3() 
+static void enable_3()
 {
     gpio_set_level(PIN_ENABLE_3, 1);
 }
 
-static void enable_4() 
+static void enable_4()
 {
     gpio_set_level(PIN_ENABLE_4, 1);
 }
@@ -159,16 +161,19 @@ static void disable_4()
     gpio_set_level(PIN_ENABLE_4, 0);
 }
 
-
-void write_dotboard_panel(dotboard_t* dots, bool is_keyframe, uint panel_col_start, uint panel_col_end) {
+void write_dotboard_panel(dotboard_t *dots, bool is_keyframe, uint panel_col_start, uint panel_col_end)
+{
     // For each column
-    for (uint c = panel_col_start; c < panel_col_end; c ++) {
+    for (uint c = panel_col_start; c < panel_col_end; c++)
+    {
 
         // For each row in the column...
-        for (uint r = 0; r < DOT_ROWS; r ++) {
-        
+        for (uint r = 0; r < DOT_ROWS; r++)
+        {
+
             // Skip dots that don't need updating
-            if (is_keyframe || (*dots)[c][r] != last_written_dotboard[c][r]) {
+            if (is_keyframe || (*dots)[c][r] != last_written_dotboard[c][r])
+            {
 
                 // Set up the set/unset pin
                 setup_state((*dots)[c][r]);
@@ -176,7 +181,6 @@ void write_dotboard_panel(dotboard_t* dots, bool is_keyframe, uint panel_col_sta
 
                 // Pulse the coil drive
                 pulse_coil();
-
             }
 
             // Advance the row
@@ -190,8 +194,6 @@ void write_dotboard_panel(dotboard_t* dots, bool is_keyframe, uint panel_col_sta
     }
 }
 
-
-
 /**
  * Write an entire dotboard.
  * 
@@ -199,12 +201,13 @@ void write_dotboard_panel(dotboard_t* dots, bool is_keyframe, uint panel_col_sta
  * In calling code, I'd ensure is_keyframe is occasionally set in case the dotboard is
  * ever disconnected from the controller for a moment.
  */
-void write_dotboard(dotboard_t* dots, bool is_keyframe)
+void write_dotboard(dotboard_t *dots, bool is_keyframe)
 {
 
     // Force an update if we don't have a dotboard buffer yet
     is_keyframe = dotboard_synced ? is_keyframe : true;
 
+    #if NUM_PANELS >= 1
     // Enable while updating
     enable_1();
     wait(1);
@@ -213,12 +216,13 @@ void write_dotboard(dotboard_t* dots, bool is_keyframe)
     reset();
     wait(1);
 
-    write_dotboard_panel(dots, is_keyframe, 0, 28);
+    write_dotboard_panel(dots, is_keyframe, 0, COLUMNS_PER_PANEL * 1);
 
     disable_1();
     wait(1);
+    #endif
 
-    // Enable while updating
+    #if NUM_PANELS >= 2
     enable_2();
     wait(1);
 
@@ -226,12 +230,13 @@ void write_dotboard(dotboard_t* dots, bool is_keyframe)
     reset();
     wait(1);
 
-    write_dotboard_panel(dots, is_keyframe, 28, 56);
-    
+    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 1, COLUMNS_PER_PANEL * 2);
+
     disable_2();
     wait(1);
+    #endif
 
-    // Enable while updating
+    #if NUM_PANELS >= 3
     enable_3();
     wait(1);
 
@@ -239,15 +244,32 @@ void write_dotboard(dotboard_t* dots, bool is_keyframe)
     reset();
     wait(1);
 
-    write_dotboard_panel(dots, is_keyframe, 56, 84);
+    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 2, COLUMNS_PER_PANEL * 3);
 
     disable_3();
     wait(1);
+    #endif
+
+    #if NUM_PANELS >= 4
+    enable_4();
+    wait(1);
+
+    // Reset
+    reset();
+    wait(1);
+
+    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 3, COLUMNS_PER_PANEL * 4);
+
+    disable_4();
+    wait(1);
+    #endif
 
     // Update the buffer with the new dotboard
-    for (uint c = 0; c < DOT_COLUMNS; c ++) {
-        for (uint r = 0; r < DOT_ROWS; r ++) {
-        last_written_dotboard[c][r] = (*dots)[c][r];
+    for (uint c = 0; c < DOT_COLUMNS; c++)
+    {
+        for (uint r = 0; r < DOT_ROWS; r++)
+        {
+            last_written_dotboard[c][r] = (*dots)[c][r];
         }
     }
 
