@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name flipcontrol-rescue)(type Legacy)(uri ${KIPRJMOD}/flipcontrol-rescue.lib)(options "")(descr ""))
+  (version 7)
+  (lib (name "flipcontrol-rescue")(type "KiCad")(uri "${KIPRJMOD}/flipcontrol-rescue.kicad_sym")(options "")(descr ""))
 )
