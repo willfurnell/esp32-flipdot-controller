@@ -1,0 +1,3 @@
+[submodule "misc-kicad-libs"]
+	path = misc-kicad-libs
+	url = https://github.com/willfurnell/misc-kicad-libs
