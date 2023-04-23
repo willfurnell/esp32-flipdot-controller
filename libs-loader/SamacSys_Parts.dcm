@@ -102,4 +102,10 @@ K
 F https://www.onsemi.com/pub/Collateral/MMBT3904LT1-D.PDF
 $ENDCMP
 #
+$CMP RJMG163118101NR
+D Modular Connectors / Ethernet Connectors RJ MAGNETIC CONN 10/100
+K
+F https://cdn.amphenol-icc.com/media/wysiwyg/files/drawing/rjmg16xxxxxx1xx.pdf
+$ENDCMP
+#
 #End Doc Library
