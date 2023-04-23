@@ -1,0 +1,105 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP NE555DR
+D Single Precision Timer
+K
+F http://www.ti.com/lit/ds/symlink/ne555.pdf
+$ENDCMP
+#
+$CMP 1825910-6
+D FSM4JH=6MM TACT SWITCH, HIGH TEMP
+K
+F https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1825910&DocType=Customer+Drawing&DocLang=English&DocFormat=pdf&PartCntxt=1825910-6
+$ENDCMP
+#
+$CMP CP2103-GMR
+D SILICON LABS - CP2103-GMR - Interface Bridges, USB to UART, 3 V, 3.6 V, QFN, 28 Pins, -40 C
+K
+F https://www.silabs.com/documents/public/data-sheets/CP2103.pdf
+$ENDCMP
+#
+$CMP PJ-202A
+D DC Power Connectors Power Jacks
+K
+F https://www.cuidevices.com/product/resource/pj-202a.pdf
+$ENDCMP
+#
+$CMP FSM4JH
+D 6x6mm tactile switch,5mm H 1.6N Black Button Tactile Switch, SPST-NO 50 mA@ 24 V dc 1.4mm
+K
+F http://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Customer+Drawing%7F1825910%7FC9%7Fpdf%7FEnglish%7FENG_CD_1825910_C9.pdf%7F1825910-6
+$ENDCMP
+#
+$CMP FSM2JRT
+D Tactile Switches TACTILE SWITCH 12VDC 1.57N
+K
+F 
+$ENDCMP
+#
+$CMP ESP32-WROOM-32D
+D WiFi Modules (802.11) SMD Module, ESP32-D0WD, 32Mbits SPI flash, UART mode, PCB antenna
+K
+F https://www.mouser.com/datasheet/2/891/esp32-wroom-32d_esp32-wroom-32u_datasheet_en-1365844.pdf
+$ENDCMP
+#
+$CMP 74HC14D,653
+D NEXPERIA - 74HC14D,653 - INVERTING SCHMITT TRIGGER, HEX, SOIC-14
+K
+F https://assets.nexperia.com/documents/data-sheet/74HC_HCT14.pdf
+$ENDCMP
+#
+$CMP CP2102-GMR
+D I/O Controller Interface IC USB-TO-UART BRIDGE, qfn-28
+K
+F https://www.silabs.com/Support%20Documents/TechnicalDocs/CP2102-9.pdf
+$ENDCMP
+#
+$CMP CP2104-F03-GMR
+D USB-to-UART 1-CH 576byte FIFO 3.3V Automotive 24-Pin QFN EP T/R
+K
+F https://www.silabs.com/documents/public/data-sheets/cp2104.pdf
+$ENDCMP
+#
+$CMP MICROXNJ
+D MICRO-USB-SMD_MICROXNJ
+K
+F https://datasheet.lcsc.com/szlcsc/1912111437_SHOU-HAN-MicroXNJ_C404969.pdf
+$ENDCMP
+#
+$CMP X322512MSB4SI
+D SMD Crystal Resonators 12MHz +/-10ppm SMD-3225_4P RoHS
+K
+F https://datasheet.lcsc.com/szlcsc/Yangxing-Tech-X322512MSB4SI_C9002.pdf
+$ENDCMP
+#
+$CMP UMH3N
+D 2 NPN pre-biased (Dual) 100mA 50V SC-70-6(SOT-363) Digital Transistors RoHS
+K
+F https://datasheet.lcsc.com/szlcsc/Changjiang-Electronics-Tech-CJ-UMH3N_C62892.pdf
+$ENDCMP
+#
+$CMP ESP32-S3-WROOM-1-N8
+D SMD MODULE, ESP32-S3, 8 MB SPI F
+K
+F https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf
+$ENDCMP
+#
+$CMP Si2347DS-T1-GE3
+D P-Ch MOSFET SOT-23 copper 30V 42mohm @ 1
+K
+F https://www.vishay.com/docs/62827/si2347ds.pdf
+$ENDCMP
+#
+$CMP AO4419
+D Trans MOSFET P-CH 30V 9.7A 8-Pin SOIC
+K
+F https://www.arrow.com/en/products/ao4419/alpha-and-omega-semiconductor?region=nac
+$ENDCMP
+#
+$CMP SMMBT3904LT1G
+D General Purpose Transistor NPN Silicon
+K
+F https://www.onsemi.com/pub/Collateral/MMBT3904LT1-D.PDF
+$ENDCMP
+#
+#End Doc Library
