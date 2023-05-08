@@ -32,3 +32,5 @@ fp-info-cache
 flipcontrol-backups/
 *auto_saved_files*
 libs-loader/
+
+pcb/gerbers
