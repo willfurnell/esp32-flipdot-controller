@@ -1,4 +1,6 @@
 (sym_lib_table
   (version 7)
   (lib (name "flipcontrol-rescue")(type "KiCad")(uri "${KIPRJMOD}/flipcontrol-rescue.kicad_sym")(options "")(descr ""))
+  (lib (name "SamacSys_Parts")(type "KiCad")(uri "${KIPRJMOD}/../libs-loader/SamacSys_Parts.kicad_sym")(options "")(descr ""))
+  (lib (name "flipdot-controller")(type "KiCad")(uri "/Users/russ/hanover/esp32-flipdot-controller/libs-loader/flipdot-controller.kicad_sym")(options "")(descr ""))
 )
