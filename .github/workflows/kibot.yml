@@ -26,7 +26,7 @@ jobs:
       with:
         path: ~/cache_3d
         key: cache_3d
-    - uses: INTI-CMNB/KiBot@v2_k7
+    - uses: INTI-CMNB/KiBot@v2_d7
       with:
         config: pcb/flipcontrol.kibot.yaml
         dir: output
