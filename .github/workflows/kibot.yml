@@ -1,0 +1,37 @@
+name: KiBot
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "pcb/**.kicad_sch"
+      - "pcb/**.kicad_pcb"
+      - "pcb/**.kibot.yml"
+  pull_request:
+    paths:
+      - "pcb/**.kicad_sch"
+      - "pcb/**.kicad_pcb"
+      - "pcb/**.kibot.yml"
+
+jobs:
+  kibot:
+   runs-on: ubuntu-latest
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Cache 3D models
+      uses: actions/cache@v3
+      with:
+        path: ~/cache_3d
+        key: cache_3d
+    - uses: INTI-CMNB/KiBot@v2_k7
+      with:
+        config: pcb/flipcontrol.kibot.yml
+        dir: output
+        cache3D: YES
+    - name: Upload kibot results
+      uses: actions/upload-artifact@v2
+      with:
+        name: kibot
+        path: output
+      
