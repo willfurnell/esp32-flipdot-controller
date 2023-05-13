@@ -30,6 +30,8 @@ jobs:
       with:
         config: pcb/flipcontrol.kibot.yaml
         dir: output
+        board: 'pcb/flipcontrol.kicad_pcb'
+        schema: 'pcb/flipcontrol.kicad_sch'
         cache3D: YES
     - name: Upload kibot results
       uses: actions/upload-artifact@v2
