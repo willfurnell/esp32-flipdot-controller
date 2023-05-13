@@ -28,7 +28,7 @@ jobs:
         key: cache_3d
     - uses: INTI-CMNB/KiBot@v2_k7
       with:
-        config: pcb/flipcontrol.kibot.yml
+        config: pcb/flipcontrol.kibot.yaml
         dir: output
         cache3D: YES
     - name: Upload kibot results
