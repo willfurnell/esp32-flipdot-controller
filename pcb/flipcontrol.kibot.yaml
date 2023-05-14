@@ -1,5 +1,3 @@
-# This is a working example.
-# For a more complete reference use `--example`
 kibot:
   version: 1
 
@@ -719,10 +717,11 @@ outputs:
   - layer: F.Fab
     suffix: F_Fab
     description: Front documentation
-- name: basic_pdf_sch_print
-  comment: Schematic in PDF format
-  type: pdf_sch_print
-  dir: Schematic
+# Schematic print doesn't work as our nightly format is newer than kibot's
+# - name: basic_pdf_sch_print
+#   comment: Schematic in PDF format
+#   type: pdf_sch_print
+#   dir: Schematic
 - name: basic_render_3d_top
   comment: 3D view from top
   type: render_3d
@@ -751,7 +750,8 @@ outputs:
   comment: 3D model in STEP format
   type: step
   dir: 3D
-- name: basic_svg_sch_print
-  comment: Schematic in SVG format
-  type: svg_sch_print
-  dir: Schematic
+# Schematic print doesn't work as our nightly format is newer than kibot's
+# - name: basic_svg_sch_print
+#   comment: Schematic in SVG format
+#   type: svg_sch_print
+#   dir: Schematic
