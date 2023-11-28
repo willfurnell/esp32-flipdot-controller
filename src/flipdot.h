@@ -10,6 +10,12 @@
 #define NUM_PANELS 3
 #define COLUMNS_PER_PANEL 28
 
+//#define DOT_ROWS 16
+//#define DOT_COLUMNS 32
+//#define NUM_PANELS 1
+//#define COLUMNS_PER_PANEL 32
+
+
 // GPIO Pin Definitions
 #define PIN_ENABLE_1 GPIO_NUM_12
 #define PIN_ENABLE_2 GPIO_NUM_13
@@ -28,6 +34,7 @@
 
 // Timings (µS)
 #define PULSE_TIME_US 200
+#define WAIT_TIME 1
 
 // Types
 typedef uint8_t dotboard_t[DOT_COLUMNS][DOT_ROWS];

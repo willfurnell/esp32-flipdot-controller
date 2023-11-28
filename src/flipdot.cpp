@@ -91,7 +91,7 @@ static void setup_state(bool dot_state)
 static void reset()
 {
     gpio_set_level(PIN_RESET, 1);
-    wait(1);
+    wait(WAIT_TIME);
     gpio_set_level(PIN_RESET, 0);
 }
 
@@ -99,7 +99,7 @@ static void reset()
 static void row_advance()
 {
     gpio_set_level(PIN_ROW_ADVANCE, 1);
-    wait(1);
+    wait(WAIT_TIME);
     gpio_set_level(PIN_ROW_ADVANCE, 0);
 }
 
@@ -107,7 +107,7 @@ static void row_advance()
 static void column_advance()
 {
     gpio_set_level(PIN_COLUMN_ADVANCE, 1);
-    wait(1);
+    wait(WAIT_TIME);
     gpio_set_level(PIN_COLUMN_ADVANCE, 0);
 }
 
@@ -177,7 +177,7 @@ void write_dotboard_panel(dotboard_t *dots, bool is_keyframe, uint panel_col_sta
 
                 // Set up the set/unset pin
                 setup_state((*dots)[c][r]);
-                wait(1);
+                wait(WAIT_TIME);
 
                 // Pulse the coil drive
                 pulse_coil();
@@ -185,12 +185,12 @@ void write_dotboard_panel(dotboard_t *dots, bool is_keyframe, uint panel_col_sta
 
             // Advance the row
             row_advance();
-            wait(1);
+            wait(WAIT_TIME);
         }
 
         // Advance the column
         column_advance();
-        wait(1);
+        wait(WAIT_TIME);
     }
 }
 
@@ -210,58 +210,58 @@ void write_dotboard(dotboard_t *dots, bool is_keyframe)
     #if NUM_PANELS >= 1
     // Enable while updating
     enable_1();
-    wait(1);
+    wait(WAIT_TIME);
 
     // Reset
     reset();
-    wait(1);
+    wait(WAIT_TIME);
 
-    write_dotboard_panel(dots, is_keyframe, 0, COLUMNS_PER_PANEL * 1);
+    write_dotboard_panel(dots, is_keyframe, 0, COLUMNS_PER_PANEL);
 
     disable_1();
-    wait(1);
+    wait(WAIT_TIME);
     #endif
 
     #if NUM_PANELS >= 2
     enable_2();
-    wait(1);
+    wait(WAIT_TIME);
 
     // Reset
     reset();
-    wait(1);
+    wait(WAIT_TIME);
 
-    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 1, COLUMNS_PER_PANEL * 2);
+    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL, (COLUMNS_PER_PANEL * 2));
 
     disable_2();
-    wait(1);
+    wait(WAIT_TIME);
     #endif
 
     #if NUM_PANELS >= 3
     enable_3();
-    wait(1);
+    wait(WAIT_TIME);
 
     // Reset
     reset();
-    wait(1);
+    wait(WAIT_TIME);
 
-    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 2, COLUMNS_PER_PANEL * 3);
+    write_dotboard_panel(dots, is_keyframe, (COLUMNS_PER_PANEL * 2), (COLUMNS_PER_PANEL * 3));
 
     disable_3();
-    wait(1);
+    wait(WAIT_TIME);
     #endif
 
     #if NUM_PANELS >= 4
     enable_4();
-    wait(1);
+    wait(WAIT_TIME);
 
     // Reset
     reset();
-    wait(1);
+    wait(WAIT_TIME);
 
-    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL * 3, COLUMNS_PER_PANEL * 4);
+    write_dotboard_panel(dots, is_keyframe, (COLUMNS_PER_PANEL * 3), (COLUMNS_PER_PANEL * 4));
 
     disable_4();
-    wait(1);
+    wait(WAIT_TIME);
     #endif
 
     // Update the buffer with the new dotboard
