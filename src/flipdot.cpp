@@ -120,53 +120,78 @@ static void pulse_coil()
 }
 
 // Enable
-static void enable_1()
-{
-    gpio_set_level(PIN_ENABLE_1, 1);
-}
-
-static void enable_2()
-{
-    gpio_set_level(PIN_ENABLE_2, 1);
-}
-
-static void enable_3()
-{
-    gpio_set_level(PIN_ENABLE_3, 1);
-}
-
-static void enable_4()
-{
-    gpio_set_level(PIN_ENABLE_4, 1);
-}
-
-// Disable
-static void disable_1()
-{
-    gpio_set_level(PIN_ENABLE_1, 0);
-}
-
-static void disable_2()
-{
-    gpio_set_level(PIN_ENABLE_2, 0);
-}
-
-static void disable_3()
-{
-    gpio_set_level(PIN_ENABLE_3, 0);
-}
-
-static void disable_4()
-{
-    gpio_set_level(PIN_ENABLE_4, 0);
-}
-
-void write_dotboard_panel(dotboard_t *dots, bool is_keyframe, uint panel_col_start, uint panel_col_end)
-{
-    // For each column
-    for (uint c = panel_col_start; c < panel_col_end; c++)
+static void enable(int pin)
+{   
+    switch (pin)
     {
+    case 1:
+        gpio_set_level(PIN_ENABLE_1, 1);
+        break;
+    case 2:
+        gpio_set_level(PIN_ENABLE_2, 1);
+        break;
+    case 3:
+        gpio_set_level(PIN_ENABLE_3, 1);
+        break;
+    case 4:
+        gpio_set_level(PIN_ENABLE_4, 1);
+    default:
+        break;
+    }
+}
 
+static void disable(int pin)
+{
+    switch (pin)
+    {
+    case 1:
+        gpio_set_level(PIN_ENABLE_1, 0);
+        break;
+    case 2:
+        gpio_set_level(PIN_ENABLE_2, 0);
+        break;
+    case 3:
+        gpio_set_level(PIN_ENABLE_3, 0);
+        break;
+    case 4:
+        gpio_set_level(PIN_ENABLE_4, 0);
+    default:
+        break;
+    }
+}
+
+static int get_current_panel(int column)
+{
+    if(column < COLUMNS_PER_PANEL) {
+        return 1;
+    } else if (column >= COLUMNS_PER_PANEL && column < COLUMNS_PER_PANEL * 2) {
+        return 2;
+    } else if (column >= COLUMNS_PER_PANEL * 2 && column < COLUMNS_PER_PANEL * 3) {
+        return 3; 
+    } else {
+        return 4;
+    }
+}
+
+/**
+ * Write an entire dotboard.
+ * 
+ * Only dots that need to change state will be pulsed unless is_keyframe is stated.
+ * In calling code, I'd ensure is_keyframe is occasionally set in case the dotboard is
+ * ever disconnected from the controller for a moment.
+ */
+void write_dotboard(dotboard_t *dots, bool is_keyframe)
+{
+
+    // Force an update if we don't have a dotboard buffer yet
+    is_keyframe = dotboard_synced ? is_keyframe : true;
+
+    // For each column
+    for (uint c = 0; c < DOT_COLUMNS; c++)
+    {
+        int current_panel = get_current_panel(c);
+        enable(current_panel);
+        wait(WAIT_TIME);
         // For each row in the column...
         for (uint r = 0; r < DOT_ROWS; r++)
         {
@@ -191,78 +216,9 @@ void write_dotboard_panel(dotboard_t *dots, bool is_keyframe, uint panel_col_sta
         // Advance the column
         column_advance();
         wait(WAIT_TIME);
+        disable(current_panel);
+        wait(WAIT_TIME);
     }
-}
-
-/**
- * Write an entire dotboard.
- * 
- * Only dots that need to change state will be pulsed unless is_keyframe is stated.
- * In calling code, I'd ensure is_keyframe is occasionally set in case the dotboard is
- * ever disconnected from the controller for a moment.
- */
-void write_dotboard(dotboard_t *dots, bool is_keyframe)
-{
-
-    // Force an update if we don't have a dotboard buffer yet
-    is_keyframe = dotboard_synced ? is_keyframe : true;
-
-    #if NUM_PANELS >= 1
-    // Enable while updating
-    enable_1();
-    wait(WAIT_TIME);
-
-    // Reset
-    reset();
-    wait(WAIT_TIME);
-
-    write_dotboard_panel(dots, is_keyframe, 0, COLUMNS_PER_PANEL);
-
-    disable_1();
-    wait(WAIT_TIME);
-    #endif
-
-    #if NUM_PANELS >= 2
-    enable_2();
-    wait(WAIT_TIME);
-
-    // Reset
-    reset();
-    wait(WAIT_TIME);
-
-    write_dotboard_panel(dots, is_keyframe, COLUMNS_PER_PANEL, (COLUMNS_PER_PANEL * 2));
-
-    disable_2();
-    wait(WAIT_TIME);
-    #endif
-
-    #if NUM_PANELS >= 3
-    enable_3();
-    wait(WAIT_TIME);
-
-    // Reset
-    reset();
-    wait(WAIT_TIME);
-
-    write_dotboard_panel(dots, is_keyframe, (COLUMNS_PER_PANEL * 2), (COLUMNS_PER_PANEL * 3));
-
-    disable_3();
-    wait(WAIT_TIME);
-    #endif
-
-    #if NUM_PANELS >= 4
-    enable_4();
-    wait(WAIT_TIME);
-
-    // Reset
-    reset();
-    wait(WAIT_TIME);
-
-    write_dotboard_panel(dots, is_keyframe, (COLUMNS_PER_PANEL * 3), (COLUMNS_PER_PANEL * 4));
-
-    disable_4();
-    wait(WAIT_TIME);
-    #endif
 
     // Update the buffer with the new dotboard
     for (uint c = 0; c < DOT_COLUMNS; c++)
